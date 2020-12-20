@@ -1,18 +1,69 @@
-import React from "react";
+import styled from 'styled-components'
+import React from 'react'
+// import './App.css';
 
-export default class App extends React.Component {
+const MainContainer = styled.div`
+display: flex;
+flex-direction: column;
+/* align-items: center; */
+height: 100vh;
+width: 70%;
+box-sizing: border-box;
+margin: 0 auto;
+border: 2px solid black;
+`
+
+const AreaChat = styled.div`
+flex-grow: 1;
+display: flex;
+flex-direction: column-reverse;
+`
+
+const AreaFormulario = styled.div`
+display: flex;
+height: 50px;
+width: 100%;
+`
+const InputUsuario = styled.input`
+width: 150px;
+
+`
+const InputMensagem = styled.input`
+flex-grow: 1;
+`
+
+const BtnEnviar = styled.button`
+width: 100px;
+`
+
+const ExibicaoMsg = styled.div`
+box-sizing: border-box;
+border:1px solid red;
+margin: 8px;
+`
+
+const StyleUsuario = styled.p`
+margin: 0;
+`
+
+const StyleMsg = styled.p`
+margin: 0;
+`
+
+class App extends React.Component {
   state = {
     //---------------------------------------------------------
     // Array de usuario e mensagens
     mensagens: [
       {
-        usuario: "Bruno",
-        textoMensagem: "mensagem1"
+        usuario: 'Bruno',
+        textoMensagem: 'Mensagem'
       },
       {
-        usuario: "Monica",
-        textoMensagem: "mensagem2"
+        usuario: 'Monica',
+        textoMensagem: 'Mensagem'
       }
+
     ],
     //---------------------------------------------------------
     //Valores de estado dos inputs
@@ -30,8 +81,8 @@ export default class App extends React.Component {
 
     // Copia o array original e adiciona novo usuario e nova mensagem
     // criando um novo array "mensagens"
-    const novoMensagens = [...this.state.mensagens, novaMensagem];
-    this.setState({ mensagens: novoMensagens });
+    const novoMensagens = [novaMensagem, ...this.state.mensagens];
+    this.setState({ mensagens: novoMensagens, valorInputMensagem: '' });
   };
 
   onChangeInputUsuario = (event) => {
@@ -43,83 +94,35 @@ export default class App extends React.Component {
     // Funcionalidade de verificação de mudança no input mensagem
     this.setState({ valorInputMensagem: event.target.value });
   };
+
   render() {
     const componentesMensagens = this.state.mensagens.map((mensagem) => {
       return (
-        <p>
-          {mensagem.usuario}: {mensagem.textoMensagem}
-        </p>
+        <ExibicaoMsg>
+          <StyleUsuario>{mensagem.usuario}:</StyleUsuario>
+          <StyleMsg>{mensagem.textoMensagem}</StyleMsg>
+        </ExibicaoMsg>
       );
     });
+
     return (
-      <div className="App">
-        <div>{componentesMensagens}</div>
-        <div>
-          <input
+      <MainContainer>
+        <AreaChat>{componentesMensagens}</AreaChat>
+        <AreaFormulario>
+          <InputUsuario
             placeholder="Usuario"
             value={this.state.valorInputUsuario}
             onChange={this.onChangeInputUsuario}
           />
-          <input
+          <InputMensagem
             placeholder="Mensagem"
             value={this.valorInputMensagem}
             onChange={this.onChangeInputTexto}
           />
-          <button onClick={this.adicionaMensagem}>ENVIAR</button>
-        </div>
-      </div>
-    );
-  }
-}
-
-
-
-
-/*import React from 'react'
-import './App.css';
-
-import{Botao} from "./form/input"; //importando input.js
-
-export default class  extends Component {
-  state = {
-    TesteH1:"",
+          <BtnEnviar onClick={this.adicionaMensagem}>Enviar</BtnEnviar>
+        </AreaFormulario>
+      </MainContainer>
+    )
   };
-
-
-onChangeH1 = (event) => {
-  this.setState({TesteH1:event.target.value});
 }
-
-onclickBotao = () => {
-  console.log(this.state.TesteH1);
-  this.setState({
-    TesteH1: "",
-  });
-};
-
-  render() {
-    return (
-      <div className="App">
-        <h1>Texto do H1: {this.state.TesteH1}</h1>
-        <input onChange={this.onChangeH1} value={this.state.TesteH1} />
-        <button onClick={this.onclickBotao}>Clique</button>
-      </div>
-    );
-  }
-}
-/*
-function App() {
-  return (
-    <div className="App">
-      <header>
-        <h1>teste</h1>
-      </header>
-      <form>
-
-      </form>
-    </div>
-  );
-}
-
 export default App;
-*/

@@ -19,6 +19,6 @@ export default class ComponenteMensagem extends React.Component {
         </p>
       );
     });
-    return <div className="App">{componentesMensagens}</div>;
+    return <div></div>;
   }
 }
