@@ -5,7 +5,6 @@ import React from 'react'
 const MainContainer = styled.div`
 display: flex;
 flex-direction: column;
-/* align-items: center; */
 height: 100vh;
 width: 70%;
 box-sizing: border-box;
@@ -17,6 +16,7 @@ const AreaChat = styled.div`
 flex-grow: 1;
 display: flex;
 flex-direction: column-reverse;
+align-items: flex-start; //Verificar o Desafio3
 `
 
 const AreaFormulario = styled.div`
@@ -54,35 +54,12 @@ class App extends React.Component {
   state = {
     //---------------------------------------------------------
     // Array de usuario e mensagens
-    mensagens: [
-      {
-        usuario: 'Bruno',
-        textoMensagem: 'Mensagem'
-      },
-      {
-        usuario: 'Monica',
-        textoMensagem: 'Mensagem'
-      }
+    mensagens: [],
 
-    ],
     //---------------------------------------------------------
     //Valores de estado dos inputs
-    valorInputUsuario: "",
-    valorInputMensagem: ""
-  };
-
-  //-----------------------------------------------------------
-  // Funcionalidade chamada ao clicar no botao "Enviar"
-  adicionaMensagem = () => {
-    const novaMensagem = {
-      usuario: this.state.valorInputUsuario,
-      textoMensagem: this.state.valorInputMensagem
-    };
-
-    // Copia o array original e adiciona novo usuario e nova mensagem
-    // criando um novo array "mensagens"
-    const novoMensagens = [novaMensagem, ...this.state.mensagens];
-    this.setState({ mensagens: novoMensagens, valorInputMensagem: '' });
+    valorInputUsuario: '',
+    valorInputMensagem: ''
   };
 
   onChangeInputUsuario = (event) => {
@@ -95,10 +72,44 @@ class App extends React.Component {
     this.setState({ valorInputMensagem: event.target.value });
   };
 
+  //Simplificando o codigo - Esta função estava se repetindo dentro das outras duas
+  criaMensagem = () => {
+    const novaMensagem = {
+      usuario: this.state.valorInputUsuario,
+      textoMensagem: this.state.valorInputMensagem
+    };
+
+    // Copia o array original e adiciona novo usuario e nova mensagem
+    // criando um novo array "mensagens"
+    const novoMensagens = [novaMensagem, ...this.state.mensagens];
+    this.setState({ mensagens: novoMensagens, valorInputMensagem: '' });
+  }
+
+  //-----------------------------------------------------------
+  // Funcionalidade de clique no botão Enter
+  clicouEnter = (evento) => {
+    if (evento.key === 'Enter') {
+      this.criaMensagem()
+    }
+  }
+
+  //-----------------------------------------------------------
+  // Funcionalidade chamada ao clicar no botao "Enviar"
+  adicionaMensagem = () => {
+    this.criaMensagem()
+  };
+
+  //-----------------------------------------------------------
+  // Funcionalidade de excluir mensagem - DuploClick
+
+  excluirMensagem = (evento) => {
+    console.log(evento)
+  }
+
   render() {
-    const componentesMensagens = this.state.mensagens.map((mensagem) => {
+    const componentesMensagens = this.state.mensagens.map((mensagem, index) => {
       return (
-        <ExibicaoMsg>
+        <ExibicaoMsg onDoubleClick={this.excluirMensagem}>
           <StyleUsuario>{mensagem.usuario}:</StyleUsuario>
           <StyleMsg>{mensagem.textoMensagem}</StyleMsg>
         </ExibicaoMsg>
@@ -108,7 +119,7 @@ class App extends React.Component {
     return (
       <MainContainer>
         <AreaChat>{componentesMensagens}</AreaChat>
-        <AreaFormulario>
+        <AreaFormulario onKeyDown={this.clicouEnter}>
           <InputUsuario
             placeholder="Usuario"
             value={this.state.valorInputUsuario}
@@ -116,7 +127,7 @@ class App extends React.Component {
           />
           <InputMensagem
             placeholder="Mensagem"
-            value={this.valorInputMensagem}
+            value={this.state.valorInputMensagem}
             onChange={this.onChangeInputTexto}
           />
           <BtnEnviar onClick={this.adicionaMensagem}>Enviar</BtnEnviar>
