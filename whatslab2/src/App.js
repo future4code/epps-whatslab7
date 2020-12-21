@@ -72,25 +72,8 @@ class App extends React.Component {
     this.setState({ valorInputMensagem: event.target.value });
   };
 
-  //-----------------------------------------------------------
-  // Funcionalidade de clique no botão Enter
-  clicouEnter = (evento) => {
-    if (evento.key === 'Enter') {
-      const novaMensagem = {
-        usuario: this.state.valorInputUsuario,
-        textoMensagem: this.state.valorInputMensagem
-      };
-
-      // Copia o array original e adiciona novo usuario e nova mensagem
-      // criando um novo array "mensagens"
-      const novoMensagens = [novaMensagem, ...this.state.mensagens];
-      this.setState({ mensagens: novoMensagens, valorInputMensagem: ''});
-    }
-  }
-
-  //-----------------------------------------------------------
-  // Funcionalidade chamada ao clicar no botao "Enviar"
-  adicionaMensagem = () => {
+  //Simplificando o codigo - Esta função estava se repetindo dentro das outras duas
+  criaMensagem = () => {
     const novaMensagem = {
       usuario: this.state.valorInputUsuario,
       textoMensagem: this.state.valorInputMensagem
@@ -100,12 +83,33 @@ class App extends React.Component {
     // criando um novo array "mensagens"
     const novoMensagens = [novaMensagem, ...this.state.mensagens];
     this.setState({ mensagens: novoMensagens, valorInputMensagem: '' });
+  }
+
+  //-----------------------------------------------------------
+  // Funcionalidade de clique no botão Enter
+  clicouEnter = (evento) => {
+    if (evento.key === 'Enter') {
+      this.criaMensagem()
+    }
+  }
+
+  //-----------------------------------------------------------
+  // Funcionalidade chamada ao clicar no botao "Enviar"
+  adicionaMensagem = () => {
+    this.criaMensagem()
   };
 
+  //-----------------------------------------------------------
+  // Funcionalidade de excluir mensagem - DuploClick
+
+  excluirMensagem = (evento) => {
+    console.log(evento)
+  }
+
   render() {
-    const componentesMensagens = this.state.mensagens.map((mensagem) => {
+    const componentesMensagens = this.state.mensagens.map((mensagem, index) => {
       return (
-        <ExibicaoMsg>
+        <ExibicaoMsg onDoubleClick={this.excluirMensagem}>
           <StyleUsuario>{mensagem.usuario}:</StyleUsuario>
           <StyleMsg>{mensagem.textoMensagem}</StyleMsg>
         </ExibicaoMsg>
