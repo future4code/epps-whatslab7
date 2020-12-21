@@ -34,10 +34,25 @@ export default class App extends React.Component {
     this.setState({ mensagens: novoMensagens });
   };
 
+<<<<<<< Updated upstream
   onChangeInputUsuario = (event) => {
     // Funcionalidade de verificação de mudança no input usuario
     this.setState({ valorInputUsuario: event.target.value });
   };
+=======
+  //-----------------------------------------------------------
+  // Funcionalidade de excluir mensagem - DuploClick
+
+  excluirMensagem = (item) => {
+    // console.log(evento)
+    const novoArray = this.state.mensagens
+    const indexMensagem = novoArray.findIndex((item) => {
+      return item.usuario === item    
+    })
+    novoArray.splice(indexMensagem, 1)
+    this.setState({mensagens: novoArray})
+  }
+>>>>>>> Stashed changes
 
   onChangeInputTexto = (event) => {
     // Funcionalidade de verificação de mudança no input mensagem
@@ -46,9 +61,16 @@ export default class App extends React.Component {
   render() {
     const componentesMensagens = this.state.mensagens.map((mensagem) => {
       return (
+<<<<<<< Updated upstream
         <p>
           {mensagem.usuario}: {mensagem.textoMensagem}
         </p>
+=======
+        <ExibicaoMsg onDoubleClick={() => this.excluirMensagem(mensagem)} key={index}>
+          <StyleUsuario>{mensagem.usuario}:</StyleUsuario>
+          <StyleMsg>{mensagem.textoMensagem}</StyleMsg>
+        </ExibicaoMsg>
+>>>>>>> Stashed changes
       );
     });
     return (
