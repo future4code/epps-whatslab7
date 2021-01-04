@@ -103,13 +103,13 @@ class App extends React.Component {
   // Funcionalidade de excluir mensagem - DuploClick
 
   excluirMensagem = (evento) => {
-    console.log(evento)
+    console.log(evento.target)
   }
 
   render() {
     const componentesMensagens = this.state.mensagens.map((mensagem, index) => {
       return (
-        <ExibicaoMsg onDoubleClick={this.excluirMensagem}>
+        <ExibicaoMsg onDoubleClick={this.excluirMensagem} key={index}>
           <StyleUsuario>{mensagem.usuario}:</StyleUsuario>
           <StyleMsg>{mensagem.textoMensagem}</StyleMsg>
         </ExibicaoMsg>
